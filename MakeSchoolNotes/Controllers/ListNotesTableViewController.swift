@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import RealmSwift
+import CoreData
 class ListNotesTableViewController: UITableViewController {
     
     var notes: Results<Note>! {
@@ -16,21 +16,21 @@ class ListNotesTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notes.count
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .Delete {
+        if editingStyle == .delete {
             
             RealmHelper.deleteNote(notes[indexPath.row])
             notes = RealmHelper.retrieveNotes()
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("listNotesTableViewCell", forIndexPath: indexPath) as! ListNotesTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "listNotesTableViewCell", for: indexPath) as! ListNotesTableViewCell
         
         let row = indexPath.row
         let note = notes[row]
@@ -40,18 +40,18 @@ class ListNotesTableViewController: UITableViewController {
         return cell
     }
     
-    @IBAction func unwindToListNotesViewController (segue: UIStoryboardSegue) {
+    @IBAction func unwindToListNotesViewController (_ segue: UIStoryboardSegue) {
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             if identifier == "displayNote" {
                 print("Table view cell tapped")
                 
                 let indexPath = tableView.indexPathForSelectedRow!
                 let note = notes[indexPath.row]
-                let displayNoteViewController = segue.destinationViewController as! DisplayNoteViewController
+                let displayNoteViewController = segue.destination as! DisplayNoteViewController
                 displayNoteViewController.note = note
             } else if identifier == "addNote" {
                 print("+ button tapped")

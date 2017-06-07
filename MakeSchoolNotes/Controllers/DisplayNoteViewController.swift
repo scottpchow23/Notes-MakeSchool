@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import RealmSwift
+import CoreData
 
 class DisplayNoteViewController: UIViewController {
     var note : Note?
@@ -15,7 +15,7 @@ class DisplayNoteViewController: UIViewController {
     @IBOutlet weak var noteTitleTextField: UITextField!
     @IBOutlet weak var noteContentTextView: UITextView!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         
@@ -30,8 +30,8 @@ class DisplayNoteViewController: UIViewController {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let listNotesTableViewController = segue.destinationViewController as! ListNotesTableViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let listNotesTableViewController = segue.destination as! ListNotesTableViewController
         if segue.identifier == "Save" {
             if let note = note {
                 
@@ -43,7 +43,7 @@ class DisplayNoteViewController: UIViewController {
                 let note = Note()
                 note.title = noteTitleTextField.text ?? ""
                 note.content = noteContentTextView.text ?? ""
-                note.modificationTime = NSDate()
+                note.modificationTime = Date()
                 RealmHelper.addNote(note)
             }
             listNotesTableViewController.notes = RealmHelper.retrieveNotes()

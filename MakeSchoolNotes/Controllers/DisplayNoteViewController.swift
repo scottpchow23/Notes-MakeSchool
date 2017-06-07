@@ -34,19 +34,17 @@ class DisplayNoteViewController: UIViewController {
         let listNotesTableViewController = segue.destination as! ListNotesTableViewController
         if segue.identifier == "Save" {
             if let note = note {
-                
-                let newNote = Note()
-                newNote.title = noteTitleTextField.text ?? ""
-                newNote.content = noteContentTextView.text ?? ""
-                RealmHelper.updateNote(note, newNote: newNote)
+                note.title = noteTitleTextField.text ?? ""
+                note.content = noteContentTextView.text ?? ""
+                listNotesTableViewController.tableView.reloadData()
             } else {
                 let note = Note()
                 note.title = noteTitleTextField.text ?? ""
                 note.content = noteContentTextView.text ?? ""
-                note.modificationTime = Date()
-                RealmHelper.addNote(note)
+                note.modificationTime = Date() as NSDate
+                listNotesTableViewController.notes.append(note)
             }
-            listNotesTableViewController.notes = RealmHelper.retrieveNotes()
+            
         }
         
     }

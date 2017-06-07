@@ -8,9 +8,9 @@
 
 import UIKit
 import CoreData
+
 class ListNotesTableViewController: UITableViewController {
-    
-    var notes: Results<Note>! {
+    var notes = [Note]() {
         didSet {
             tableView.reloadData()
         }
@@ -23,9 +23,7 @@ class ListNotesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            
-            RealmHelper.deleteNote(notes[indexPath.row])
-            notes = RealmHelper.retrieveNotes()
+            notes.remove(at: indexPath.row)
         }
     }
     
@@ -63,7 +61,6 @@ class ListNotesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        notes = RealmHelper.retrieveNotes()
     }
   
 }

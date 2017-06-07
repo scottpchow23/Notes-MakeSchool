@@ -7,10 +7,10 @@
 //
 
 import Foundation
-import RealmSwift
-class Note: Object {
+import CoreData
+class NoteBAD: NSManagedObject {
     
-    dynamic var title = ""
-    dynamic var content = ""
-    dynamic var modificationTime = Date()
+    @NSManaged var title = ""
+    @NSManaged var content : String?
+    @NSManaged var modificationTime : Date?
 }
